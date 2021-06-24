@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hiển thị thông tin</title>
+</head>
+<body>
+    <center>
+        <h1>Thông tin của các nhân sự</h1>
+        <form action="timkiemns.php" method="POST">
+            <input type="text" name="keyword" require size="20"> <input type="submit" value="Tìm Kiếm">
+        </form>
+        <?php
+        $database = mysqli_connect('localhost','root','','ql_nhansu');
+        if(!$database){
+            echo "Lỗi Kết Nối";
+        }
+        else{
+            $sql_select = "SELECT * FROM t_nhansu";
+            $kq = mysqli_query($database,$sql_select);
+
+            echo "<div class=\"card\">\n";
+            echo "<div class=\"table-stats order-table ov-h\">\n";
+            echo "<table class=\"table \">\n";
+            echo "<thead>\n";
+            echo "	<tr>\n";
+            echo "		<th class=\"serial\">#</th>\n";
+            echo "		<th class=\"avatar\">Biểu tượng</th>\n";
+            echo "		<th>Tên ví</th>\n";
+            echo "		<th>Loại ví</th>\n";
+            echo "		<th>Tiền tệ</th>\n";
+            echo "		<th>Ghi chú</th>\n";
+            echo "		<th>Thao tác</th>\n";
+            echo "	</tr>\n";
+            echo "</thead>\n";
+
+            $i=0;
+            if(mysqli_num_rows($kq)>0){
+                while($r = mysqli_fetch_array($kq)){
+                $i++;
+                echo  "<tr align='center'>";
+                    $mans = $r['mans'];
+                    echo  "<td>".$i."</td>";
+                    echo  "<td>".$r['mans']."</td>";
+                    echo  "<td>".$r['tenns']."</td>";
+                    echo  "<td>".$r['gioitinh']."</td>";
+                    echo  "<td>".$r['namsinh']."</td>";
+                    $anh=$r['anh'];
+                    $tenanh= '<img src="./image/'.$anh.'" width="50" height="50">';
+                    echo  "<td>".$tenanh."</td>";
+                    echo  "<td>".$r['diachi']."</td>";
+                    echo  "<td>".$r['email']."</td>";
+                    echo  "<td>".$r['trinhdo']."</td>";
+                    echo  "<td>".$r['chuyennganh']."</td>";
+                    $mapb=$r['mapb'];
+                    if($mapb=='KT'){
+                        $tenpb="Kế Toán";
+                    }elseif($mapb=='BV'){
+                        $tenpb="Bảo Vệ";
+                    }else{
+                        $tenpb="Vận Thu";
+                    }
+                    echo  "<td>".$tenpb."</td>"; 
+                    echo  "<td><a href='editnhansu.php?mans=$mans'>Sửa</a></td>";
+                    echo  "<td><a href='delnhansu.php?mans=$mans'>Xoá</a></td>";
+                echo  "</tr>";
+                }
+            }
+            echo  "</table>";
+        }
+        ?>
+    </center>
+</body>
+</html>

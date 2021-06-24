@@ -1,0 +1,54 @@
+<?php
+$database = mysqli_connect('localhost', 'root', '', 'quanlyvitien');
+if (!$database) {
+    echo "Lỗi Kết Nối";
+} else {
+    $kq = mysqli_query($database, "SELECT * FROM t_vitien,t_loaivi WHERE t_vitien.maloaivi=t_loaivi.maloaivi");
+    echo "<div class='card'>";
+    echo "<div class='table-stats order-table ov-h'>";
+    echo "<table class='table'>";
+    echo "<thead>";
+    echo "<tr>";
+    echo "<th class='serial'>#</th>";
+    echo "<th class='avatar'>Biểu tượng</th>";
+    echo "<th>Tên ví</th>";
+    echo "<th>Loại ví</th>";
+    echo "<th>Số dư</th>";
+    echo "<th>Ghi chú</th>";
+    echo "<th style='text-align: center'>Thao tác</th>";
+    echo "</tr>";
+    echo "</thead>";
+    $i = 0;
+    if (mysqli_num_rows($kq) > 0) {
+        while ($r = mysqli_fetch_array($kq)) {
+            $i++;
+            echo "<tbody>";
+            echo "<tr>";
+            echo "<td class='serial'>$i.</td>";
+            echo "<td class='avatar'>";
+            echo "<div class='round-img'>";
+            echo "<a href='#'><img class='rounded-circle' src='images/logo2.png' alt=''></a>";
+            echo "</div>";
+            echo "</td>";
+            echo "<td><span class='name'>" . $r['tenvi'] . "</span></td>";
+            echo "<td><span class='product'>" . $r['maloaivi'] . "</span></td>";
+            $dinhdangtien = number_format($r['sodu']);
+            echo "<td>" . $dinhdangtien . "</td>";
+            echo "<td>" . $r['ghichu'] . "</td>";
+            echo "<td style='text-align: center'>";
+            $mavi = $r['mavi'];
+            echo "<a class='btn btn-success btn-sm editbtn' data-toggle='modal' data-target='#editvi' href='base_editvitien.php?mavi=$mavi'>Sửa</a>";
+            echo "<a class='btn btn-danger btn-sm' href='del_vitien.php?mavi=$mavi'>Xoá</a>";
+            echo "</td>";
+            echo "</tr>";
+            echo "</body>";
+        }
+    }
+    echo "</table>\n";
+    echo "</div>\n";
+    echo "</div>\n";
+    echo "</table>";
+    echo "</div>";
+    echo "</div>";
+}
+?>

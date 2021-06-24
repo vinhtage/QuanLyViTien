@@ -1,0 +1,70 @@
+<div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="box-title">Thông tin các ví</h4>
+                            </div>
+                            <div class="col-lg-12">
+                            <?php
+                            $database = mysqli_connect('localhost','root','','ql_vitien');
+                            if(!$database){
+                                echo "Lỗi Kết Nối";
+                            }
+                            else{
+                                $sql_select = "SELECT * FROM taovitien";
+                                $kq = mysqli_query($database,$sql_select);
+                                echo "<div class='card'>";
+                                    echo "<div class='table-stats order-table ov-h'>";
+                                        echo "<table class='table'>";
+                                            echo "<thead>";
+                                                echo "<tr>";
+                                                    echo "<th class='serial'>#</th>";
+                                                    echo "<th class='avatar'>Biểu tượng</th>";
+                                                    echo "<th>Tên ví</th>";
+                                                    echo "<th>Loại ví</th>"; 
+                                                    echo "<th>Số dư</th>"; 
+                                                    echo "<th>Tiền tệ</th>"; 
+                                                    echo "<th>Ghi chú</th>";
+                                                    echo "<th style='text-align: center'>Thao tác</th>";    
+                                                echo "</tr>";
+                                            echo "</thead>";
+                                            $i=0;
+                                            if(mysqli_num_rows($kq)>0){
+                                                while($r = mysqli_fetch_array($kq)){
+                                                $i++;
+                                            echo "<tbody>";
+                                                echo "<tr>";
+                                                    echo "<td class='serial'>$i.</td>";
+                                                    echo "<td class='avatar'>";
+                                                        echo "<div class='round-img'>";
+                                                            echo "<a href='#'><img class='rounded-circle' src='images/logo2.png' alt=''></a>";
+                                                        echo "</div>";
+                                                    echo "</td>";
+                                                    echo "<td><span class='name'>".$r['tenvitien']."</span></td>"; 
+                                                    echo "<td><span class='product'>".$r['loaivi']."</span></td>";
+                                                    $dinhdangtien = number_format($r['naptien']); 
+                                                    echo "<td>".$dinhdangtien."</td>";
+                                                    echo "<td>".$r['tiente']."</td>";
+                                                    echo "<td>".$r['ghichu']."</td>";
+                                                    echo "<td style='text-align: center'>";
+                                                    $tenvitien = $r['tenvitien'];
+                                                    echo "<a class='btn btn-success btn-sm' href='edit_vitien.php?tenvitien=$tenvitien'>Sửa</a>&nbsp";
+                                                    echo "<a class='btn btn-danger btn-sm' href='del_vitien.php?tenvitien=$tenvitien'>Xoá</a>";
+                                                    echo "</td>";    
+                                                echo "</tr>";
+                                            echo "</body>";
+                                                }                               
+                                            }            
+                                            echo "</table>\n";
+                                            echo "</div>\n";
+                                            echo "</div>\n";
+                                            
+                                        echo "</table>";
+                                    echo "</div>";
+                                echo "</div>";
+                            }
+                            ?>
+                            </div>
+                        </div>
+                    </div><!-- /# column -->
+                </div>
